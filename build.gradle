@@ -17,3 +17,16 @@ allprojects {
         jcenter()
     }
 }
+
+// Reference : https://discussions.udacity.com/t/gradle-task-for-running-test-starting-and-shutting-server/171718
+evaluationDependsOn ":app"
+evaluationDependsOn ":backend"
+
+project(":backend"){
+    appengine{
+        daemon true
+    }
+}
+
+task runAppEngineAndTest(dependsOn: ":backend:appengineRun") { }
+runAppEngineAndTest.finalizedBy([":app:connectedAndroidTest", ":backend:appengineStop"])
