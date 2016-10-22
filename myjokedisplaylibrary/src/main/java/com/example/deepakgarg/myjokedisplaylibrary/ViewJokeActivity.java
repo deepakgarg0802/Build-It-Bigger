@@ -19,6 +19,6 @@ public class ViewJokeActivity extends AppCompatActivity {
         joke= getIntent().getStringExtra(INTENT_LABEL);
 
         textView.setText(joke);
-        Toast.makeText(getApplicationContext(),"Lol !!!!!!!!!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),getResources().getString(R.string.toast_message),Toast.LENGTH_SHORT).show();
     }
 }

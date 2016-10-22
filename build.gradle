@@ -30,3 +30,42 @@ project(":backend"){
 
 task runAppEngineAndTest(dependsOn: ":backend:appengineRun") { }
 runAppEngineAndTest.finalizedBy([":app:connectedAndroidTest", ":backend:appengineStop"])
+
+/****************Another Approach*******************
+ * task allInOne {
+    dependsOn 'stopServer'
+
+    println 'All tasks'
+
+    doLast {
+        println 'Your project is awesome'
+    }
+}
+
+task startServer {
+    dependsOn ':backend:appengineRun'
+
+    println 'Starting server'
+
+    doLast {
+        println 'Server started'
+    }
+}
+
+task doConnectedTests {
+    evaluationDependsOn ':backend'
+    dependsOn 'startServer'
+    dependsOn ':app:connectedAndroidTest'
+
+    doLast {
+        println 'Tests Done, Nice!'
+    }
+}
+
+task stopServer {
+    dependsOn = ['doConnectedTests', ':backend:appengineStop']
+
+    doLast {
+        println 'Server stopped'
+    }
+}*/
