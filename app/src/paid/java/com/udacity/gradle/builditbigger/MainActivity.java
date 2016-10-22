@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.NerdyJoke;
 import com.example.deepakgarg.myjokedisplaylibrary.ViewJokeActivity;
@@ -13,15 +14,24 @@ import com.example.deepakgarg.myjokedisplaylibrary.ViewJokeActivity;
 public class MainActivity extends AppCompatActivity {
 
     NerdyJoke random_joke;
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Add and disable Progress bar until click off button
+        mProgressBar=(ProgressBar)findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.GONE);
         random_joke=new NerdyJoke();
     }
 
+    @Override
+    protected void onPause() {
+        mProgressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View view) {
 
+        mProgressBar.setVisibility(View.VISIBLE);
         new EndpointsAsyncTask().execute(this);
         //Toast.makeText(this, random_joke.getJoke(), Toast.LENGTH_SHORT).show();
     }

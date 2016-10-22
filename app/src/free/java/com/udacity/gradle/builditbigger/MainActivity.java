@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.NerdyJoke;
 import com.google.android.gms.ads.AdListener;
@@ -19,12 +20,16 @@ public class MainActivity extends AppCompatActivity {
     NerdyJoke random_joke;
     InterstitialAd mInterstitialAd;
     Context mContext;   //to be used in asynctask
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         random_joke=new NerdyJoke();
+        //Add and disable Progress bar until click off button
+        mProgressBar=(ProgressBar)findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.GONE);
 
         mContext=this;
         mInterstitialAd=new InterstitialAd(this);
@@ -56,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        mProgressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -75,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
+            mProgressBar.setVisibility(View.VISIBLE);
             new EndpointsAsyncTask().execute(this);
         }
         //Toast.makeText(this, random_joke.getJoke(), Toast.LENGTH_SHORT).show();
