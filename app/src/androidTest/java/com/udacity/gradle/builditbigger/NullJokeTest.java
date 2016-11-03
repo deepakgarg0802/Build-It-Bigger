@@ -4,6 +4,8 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Deepak Garg on 20-10-2016.
@@ -19,12 +21,14 @@ public class NullJokeTest extends AndroidTestCase {
         endpointsAsyncTask.execute(getContext());
 
         try {
-            result=endpointsAsyncTask.get();
+            result=endpointsAsyncTask.get(30, TimeUnit.SECONDS);
             Log.d(TAG,"String received is non-empty");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        } catch (TimeoutException e) {
+            fail("Timed out");
         }
 
         assertNotNull("null object received",result);
